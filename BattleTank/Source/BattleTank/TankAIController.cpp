@@ -8,22 +8,31 @@ void ATankAIController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	ATank* PossessedTank = GetControlledTank();
+	PossessedTank = GetControlledTank();
 	if (PossessedTank == nullptr)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("No Tank Possessed in AI Controller"));
+		UE_LOG(LogTemp, Error, TEXT("No Tank Possessed in AI Controller"));
 	}
 	else {
 		UE_LOG(LogTemp, Warning, TEXT("AI possessing %s"), *(PossessedTank->GetName()));
 	}
+}
 
+void ATankAIController::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	//Find player location(if there, might be dead), aim there
 	Player = GetPlayer();
-	if (!Player) 
+	if (Player)
 	{
-		UE_LOG(LogTemp, Warning, TEXT("%s could not find Player"), *(PossessedTank->GetName()));
+		//TODO Move toward player
+
+		PossessedTank->AimAt(Player->GetActorLocation());
+
+		//Fire at player
 	}
 	else {
-		UE_LOG(LogTemp, Warning, TEXT("%s found Player %s"), *(PossessedTank->GetName()), *(Player->GetName()));
+		UE_LOG(LogTemp, Warning, TEXT("%s could not find Player"), *(PossessedTank->GetName()));
 	}
 }
 
@@ -38,3 +47,4 @@ ATank* ATankAIController::GetControlledTank() const
 {
 	return Cast<ATank>(GetPawn());
 }
+
