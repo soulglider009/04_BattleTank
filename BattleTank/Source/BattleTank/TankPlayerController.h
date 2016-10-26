@@ -2,10 +2,11 @@
 
 #pragma once
 
-#include "Tank.h"
+
 #include "GameFramework/PlayerController.h"
 #include "TankPlayerController.generated.h" // must be last include
 
+class ATank;
 /**
  * 
  */
@@ -19,7 +20,7 @@ private:
 	ATank* GetControlledTank() const;
 
 	UPROPERTY(EditAnywhere)
-		float LineTraceRange = 1000000.0f;
+	float LineTraceRange = 1000000.0f;
 
 	void BeginPlay() override;
 

@@ -1,6 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+
 #include "BattleTank.h"
+#include "Tank.h"
 #include "TankAIController.h"
 
 
@@ -13,9 +15,7 @@ void ATankAIController::BeginPlay()
 	{
 		UE_LOG(LogTemp, Error, TEXT("No Tank Possessed in AI Controller"));
 	}
-	else {
-		UE_LOG(LogTemp, Warning, TEXT("AI possessing %s"), *(PossessedTank->GetName()));
-	}
+
 }
 
 void ATankAIController::Tick(float DeltaTime)
