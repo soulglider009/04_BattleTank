@@ -2,6 +2,8 @@
 
 #include "BattleTank.h"
 #include "TankAimingComponent.h"
+#include "Projectile.h"
+#include "TankBarrel.h"
 #include "Tank.h"
 
 
@@ -13,10 +15,12 @@ ATank::ATank()
 
 	//No need to protect points as added at construction
 	TankAimingComponent = CreateDefaultSubobject<UTankAimingComponent>(FName("AimingComponent"));
+
 }
 
 void ATank::SetBarrelReference(UTankBarrel* BarrelToSet)
 {
+	Barrel = BarrelToSet;
 	TankAimingComponent->SetBarrelReference(BarrelToSet);
 }
 
@@ -40,4 +44,17 @@ void ATank::AimAt(FVector HitLocation) //Delegates Aim At down to a component
 void ATank::Fire()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Firing"));
+	if (!Barrel) 
+	{ 
+		UE_LOG(LogTemp, Warning, TEXT("Tank didn't find a project reference. Check to make sure it's set in the blueprint editor"));
+		return; 
+	}
+	//Spawn projectile at socket location on the barrel
+	auto Projectile = GetWorld()->SpawnActor<AProjectile>(
+		ProjectileBlueprint, 
+		Barrel->GetSocketLocation(FName("Projectile")), //This is very dangerous, this is hardcoded in code
+		Barrel->GetSocketRotation(FName("Projectile"))
+		);
+
+
 }
