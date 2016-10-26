@@ -43,18 +43,24 @@ void ATank::AimAt(FVector HitLocation) //Delegates Aim At down to a component
 
 void ATank::Fire()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Firing"));
-	if (!Barrel) 
-	{ 
-		UE_LOG(LogTemp, Warning, TEXT("Tank didn't find a project reference. Check to make sure it's set in the blueprint editor"));
-		return; 
+	bool isReloaded = (FPlatformTime::Seconds() - LastFireTime) > ReloadTimeInSeconds;
+
+	if (Barrel && isReloaded) {
+		//Spawn projectile at socket location on the barrel
+		auto Projectile = GetWorld()->SpawnActor<AProjectile>(
+			ProjectileBlueprint,
+			Barrel->GetSocketLocation(FName("Projectile")), //This is very dangerous, this is hardcoded in code
+			Barrel->GetSocketRotation(FName("Projectile"))
+			);
+
+		Projectile->LaunchProjectile(LaunchSpeed);
+		LastFireTime = FPlatformTime::Seconds();
 	}
-	//Spawn projectile at socket location on the barrel
-	auto Projectile = GetWorld()->SpawnActor<AProjectile>(
-		ProjectileBlueprint, 
-		Barrel->GetSocketLocation(FName("Projectile")), //This is very dangerous, this is hardcoded in code
-		Barrel->GetSocketRotation(FName("Projectile"))
-		);
-
-
+	else if(Barrel && !isReloaded)
+	{
+		//Some message for reloading maybe?
+	}
+	else {
+		UE_LOG(LogTemp, Warning, TEXT("Tank didn't find a projectile reference. Check to make sure it's set in the blueprint editor"));
+	}
 }
