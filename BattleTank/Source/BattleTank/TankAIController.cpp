@@ -29,7 +29,7 @@ void ATankAIController::Tick(float DeltaTime)
 		PossessedTank->AimAt(PlayerTank->GetActorLocation());
 
 		//Fire
-		PossessedTank->Fire();
+		//PossessedTank->Fire();
 
 	}else{
 		UE_LOG(LogTemp, Warning, TEXT("%s could not find Player or Self"), *(GetPawn()->GetName()));
