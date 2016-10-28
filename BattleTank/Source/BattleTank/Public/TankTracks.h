@@ -15,8 +15,6 @@ class BATTLETANK_API UTankTracks : public UStaticMeshComponent
 	
 public:
 
-	virtual void BeginPlay() override;
-
 	UFUNCTION(BlueprintCallable, Category = INPUT)
 	void SetThrottle(float Throttle);
 
@@ -24,16 +22,7 @@ public:
 
 private:
 
-	float SpeedConverter(float KilometerPerHour);
-
 	//F(newtons) = M(KG) * A(m/s^2). This is derived from the Tank's primitive component mass and designer setup max speed and time to max speed.
-	float MaxDrivingForce;
+	float MaxDrivingForce = 30000000;
 
-	//Max Speed in km per hour, which in code is then calculated to meters per second
-	UPROPERTY(EditDefaultsOnly, Category = Movement)
-	float MaxSpeed = 15000;
-
-	//Time to get to max speed in seconds
-	UPROPERTY(EditDefaultsOnly, Category = Movement)
-	float TimeToMaxSpeed = 2;
 };
