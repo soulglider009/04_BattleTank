@@ -20,7 +20,14 @@ void UTankMovementComponent::RequestDirectMove(const FVector& MoveVelocity, bool
 	auto TankForward = GetOwner()->GetActorForwardVector().GetSafeNormal();
 	auto AIForwardIntention = MoveVelocity.GetSafeNormal();
 
+	//UE_LOG(LogTemp, Error, TEXT("Tank forward: %f AIForwardIntention: %f"), TankForward, AIForwardIntention);
 	//My guess, will get forward vector, then will send some kind of movement on the tracks to aim that direction for forward and left/right (from 0 to 1 on the throw)
+	auto ForwardThrow = FVector::DotProduct(TankForward, AIForwardIntention);
+	IntendMoveForward(ForwardThrow);
+
+	auto RightThrow = FVector::CrossProduct(TankForward, AIForwardIntention).Z;
+	IntendTurnRight(RightThrow);
+
 }
 
 void UTankMovementComponent::IntendMoveForward(float Throw)
@@ -43,17 +50,7 @@ void UTankMovementComponent::IntendTurnRight(float Throw)
 		return;
 	}
 	LeftTrack->SetThrottle(Throw);
-
-	//TODO prevent double speed
-}
-
-void UTankMovementComponent::IntendTurnLeft(float Throw)
-{
-	if (!LeftTrack || !RightTrack)
-	{
-		UE_LOG(LogTemp, Error, TEXT("No LeftTrack or RightTrack on TankMovementComponent"));
-		return;
-	}
-	RightTrack->SetThrottle(Throw);
+	RightTrack->SetThrottle(-Throw);
+	
 	//TODO prevent double speed
 }

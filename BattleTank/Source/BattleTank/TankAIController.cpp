@@ -22,14 +22,14 @@ void ATankAIController::Tick(float DeltaTime)
 	//Protect null pointer
 	if (PlayerTank && PossessedTank)	{ 
 		//TODO Move toward player
-		MoveToActor(PlayerTank, AcceptanceRadius, true, true, false);//TODO check radius is in cm of acceptance radius
+		MoveToActor(PlayerTank, AcceptanceRadius);//TODO check radius is in cm of acceptance radius
 
 
 		//Aim at the player
 		PossessedTank->AimAt(PlayerTank->GetActorLocation());
 
 		//Fire
-		//PossessedTank->Fire();
+		PossessedTank->Fire();
 
 	}else{
 		UE_LOG(LogTemp, Warning, TEXT("%s could not find Player or Self"), *(GetPawn()->GetName()));
