@@ -5,7 +5,7 @@
 #include "AIController.h"
 #include "TankAIController.generated.h"
 
-class ATank;
+class UTankAimingComponent;
 
 UCLASS()
 class BATTLETANK_API ATankAIController : public AAIController
@@ -18,6 +18,8 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
+
+	UTankAimingComponent* AimingComponent = nullptr;
 
 	//how close can the AI tank get to the player before it stops moving (probably want it to be somewhere between half it's range and full range)
 	UPROPERTY(EditDefaultsOnly, Category = Pathfinding)

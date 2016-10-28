@@ -1,17 +1,19 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 #include "BattleTank.h"
-#include "Tank.h"
+#include "TankAimingComponent.h"
 #include "TankPlayerController.h"
 
 void ATankPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	ATank* PossessedTank = GetControlledTank();
-	if (PossessedTank == nullptr)
-	{
-		UE_LOG(LogTemp, Warning, TEXT("No Tank Possessed in Player Controller"));
-	}
+
+	AimingComponent = GetPawn()->FindComponentByClass<UTankAimingComponent>();
+
+	//Sends a blueprint event to kick off BP initialization
+	if (!ensure(AimingComponent)) { return; }
+	FoundAimingComponent(AimingComponent);
+	
 }
 
 void ATankPlayerController::Tick(float DeltaTime)
@@ -20,26 +22,15 @@ void ATankPlayerController::Tick(float DeltaTime)
 	AimTowardsCrosshair();
 }
 
-ATank* ATankPlayerController::GetControlledTank() const
-{
-	return Cast<ATank>(GetPawn());
-}
-
 void ATankPlayerController::AimTowardsCrosshair()
 {
-	if (!GetControlledTank()) { return;}
-
-
 	FVector HitLocation; //Out parameter
 	if (GetSightRayHitLocation(HitLocation)) 
 	{
-		GetControlledTank()->AimAt(HitLocation);
+		AimingComponent->AimAt(HitLocation);
 	}
-	else {
-		UE_LOG(LogTemp, Warning, TEXT("No Hit Location Located"));
-	}
-	
 
+	//TODO do something with places player can't shoot at. This is awful
 }
 
 //get world location of linetrace through crosshair, true if hits landscape
@@ -51,21 +42,11 @@ bool ATankPlayerController::GetSightRayHitLocation(FVector& HitLocation) const
 	GetViewportSize(ViewportSizeX, ViewPortSizeY);
 	FVector2D ScreenLocation = FVector2D(ViewportSizeX * CrossHairXLocation, ViewPortSizeY * CrossHairYLocation);
 
-	
 	FVector LookDirection;
-	if (GetLookDirection(ScreenLocation, LookDirection))
+	if (GetLookDirection(ScreenLocation, LookDirection) && GetLookVectorHitLocation(LookDirection, HitLocation)) 
 	{
-		if (GetLookVectorHitLocation(LookDirection, HitLocation))
-		{
-			return true;
-		}
-		else {
-			return false;
-		}
-	}else {
-		return false;
+		return true;
 	}
-
 	return false;
 }
 

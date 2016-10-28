@@ -18,11 +18,8 @@ public:
 	UFUNCTION(BlueprintCallable, Category = INPUT)
 	void SetThrottle(float Throttle);
 
-
-
 private:
 
 	//F(newtons) = M(KG) * A(m/s^2). This is derived from the Tank's primitive component mass and designer setup max speed and time to max speed.
 	float MaxDrivingForce = 30000000;
-
 };

@@ -33,5 +33,4 @@ private:
 	UTankTracks* LeftTrack = nullptr;
 	UTankTracks* RightTrack = nullptr;
 
-
 };
