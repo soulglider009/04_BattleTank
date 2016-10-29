@@ -25,7 +25,10 @@ private:
 	void DestroyThis();
 
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-	float DestroyDelay = 5;
+	float Damage = 25.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+	float DestroyDelay = 5.0f;
 
 	UPROPERTY(EditAnywhere, Category = "Components")
 	UStaticMeshComponent* CollisionMesh = nullptr; //TSubclass is built in as a pointer

@@ -24,6 +24,10 @@ protected:
 
 private:
 
+	virtual void SetPawn(APawn* InPawn) override; //called when pawn is possessed
+
+	UFUNCTION()
+	void OnPossessedTankDeath();
 
 	//how close can the AI tank get to the player before it stops moving (probably want it to be somewhere between half it's range and full range)
 	UPROPERTY(EditDefaultsOnly, Category = Pathfinding)

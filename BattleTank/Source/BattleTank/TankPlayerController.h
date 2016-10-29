@@ -22,6 +22,8 @@ protected:
 
 private:
 
+	virtual void SetPawn(APawn* InPawn) override;
+
 	UTankAimingComponent* AimingComponent = nullptr;
 
 	UPROPERTY(EditDefaultsOnly)
