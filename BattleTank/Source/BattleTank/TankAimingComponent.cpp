@@ -33,7 +33,11 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 {
 	//Change reload check to here
 	auto Time = GetWorld()->GetTimeSeconds();
-	if((Time - LastFireTime) < ReloadTimeInSeconds)
+	if (CurrentAmmo == 0) 
+	{
+			FiringStatus = EFiringStatus::Out_Of_Ammo;
+	}
+	else if((Time - LastFireTime) < ReloadTimeInSeconds)
 	{
 		FiringStatus = EFiringStatus::Reloading;
 
@@ -41,7 +45,6 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	else if (IsBarrelMoving() )
 	{
 		FiringStatus = EFiringStatus::Moving;
-
 	}
 	else {
 		FiringStatus = EFiringStatus::Ready;
@@ -49,6 +52,16 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 	}
 	//TODO handle aiming and locked states
 
+}
+
+EFiringStatus UTankAimingComponent::GetFiringState() const
+{
+	return FiringStatus;
+}
+
+int32 UTankAimingComponent::GetAmmoLeft() const
+{
+	return CurrentAmmo;
 }
 
 
@@ -110,8 +123,7 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 
 void UTankAimingComponent::Fire()
 {
-
-	if (FiringStatus != EFiringStatus::Reloading) {
+	if (FiringStatus == EFiringStatus::Moving || FiringStatus == EFiringStatus::Ready) {
 		if (!ensure(Barrel)) { return; }
 		if (!ensure(ProjectileBlueprint)) { return; }
 		//Spawn projectile at socket location on the barrel
@@ -122,7 +134,14 @@ void UTankAimingComponent::Fire()
 			);
 
 		Projectile->LaunchProjectile(LaunchSpeed);
+		CurrentAmmo--;
 		LastFireTime = GetWorld()->GetTimeSeconds();
 	}
 		//TODO change the cursor color on the player UI (it's strange to have this here though..)
 }
+
+void UTankAimingComponent::ReloadAmmo()
+{
+	//TODO write the reload function
+}
+

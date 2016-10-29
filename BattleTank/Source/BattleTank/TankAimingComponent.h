@@ -7,11 +7,12 @@
 
 //Enum for aiming state
 UENUM()
-enum class EFiringStatus : uint8 //means 8 bit integer, 256 possible members
+enum class EFiringStatus : uint8 //means 8 bit integer, 256 possible members TODO rename enum states to make more sense
 {
 	Reloading,
 	Moving,
-	Ready
+	Ready,
+	Out_Of_Ammo
 };
 
 //forward declarations
@@ -42,12 +43,19 @@ public:
 
 	FVector AimDirection;
 
+	EFiringStatus GetFiringState() const;
+
+	UFUNCTION(BlueprintCallable, Category = "Custom")
+	int32 GetAmmoLeft()const;
+
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "State")
 	EFiringStatus FiringStatus = EFiringStatus::Reloading;
 
+
 private:
 	
+	void ReloadAmmo();
 
 	UTankBarrel* Barrel = nullptr;
 	UTankTurret* Turret = nullptr;
@@ -55,6 +63,14 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	float LaunchSpeed = 10000.0f;
 
+	int32 CurrentAmmo = 3;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Setup")
+		float ReloadTime = 3.0f;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Custom")
+	int32 MaxAmmo = 3;
+	
 	void MoveBarrelTowards(FVector AimDirection);
 
 	bool IsBarrelMoving();
