@@ -24,6 +24,7 @@ void ATankPlayerController::Tick(float DeltaTime)
 
 void ATankPlayerController::AimTowardsCrosshair()
 {
+	//TODO change this to find it every time, because might not be possessing a tank, need to protect that
 	FVector HitLocation; //Out parameter
 	if (GetSightRayHitLocation(HitLocation)) 
 	{

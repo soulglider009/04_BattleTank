@@ -31,26 +31,33 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void Initialise(UTankBarrel* BarrelToSet, UTankTurret* TurretToSet);
 
-	//TODO Add set turret reference
+	virtual void BeginPlay() override;
+
+	virtual void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction *ThisTickFunction) override;
 
 	void AimAt(FVector HitLocation);
 
 	UFUNCTION(BlueprintCallable, Category = "Setup")
 	void Fire();
 
+	FVector AimDirection;
+
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "State")
-	EFiringStatus FiringStatus = EFiringStatus::Ready;
+	EFiringStatus FiringStatus = EFiringStatus::Reloading;
 
 private:
+	
 
 	UTankBarrel* Barrel = nullptr;
 	UTankTurret* Turret = nullptr;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-	float LaunchSpeed = 4000.0f;
+	float LaunchSpeed = 10000.0f;
 
 	void MoveBarrelTowards(FVector AimDirection);
+
+	bool IsBarrelMoving();
 
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
 	float ReloadTimeInSeconds = 3;
