@@ -27,6 +27,7 @@ void UTankAimingComponent::Initialise(UTankBarrel* BarrelToSet, UTankTurret* Tur
 void UTankAimingComponent::BeginPlay()
 {
 	LastFireTime = GetWorld()->GetTimeSeconds();
+	CurrentAmmo = MaxAmmo;
 }
 
 void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction * ThisTickFunction)
@@ -50,6 +51,7 @@ void UTankAimingComponent::TickComponent(float DeltaTime, ELevelTick TickType, F
 		FiringStatus = EFiringStatus::Ready;
 
 	}
+
 	//TODO handle aiming and locked states
 
 }
@@ -59,7 +61,7 @@ EFiringStatus UTankAimingComponent::GetFiringState() const
 	return FiringStatus;
 }
 
-int32 UTankAimingComponent::GetAmmoLeft() const
+int32 UTankAimingComponent::GetAmmoLeft()
 {
 	return CurrentAmmo;
 }

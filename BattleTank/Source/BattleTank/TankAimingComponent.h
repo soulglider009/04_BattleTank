@@ -46,7 +46,7 @@ public:
 	EFiringStatus GetFiringState() const;
 
 	UFUNCTION(BlueprintCallable, Category = "Custom")
-	int32 GetAmmoLeft()const;
+	int32 GetAmmoLeft();
 
 protected:
 	UPROPERTY(BlueprintReadOnly, Category = "State")
@@ -66,9 +66,6 @@ private:
 	int32 CurrentAmmo = 3;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-		float ReloadTime = 3.0f;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Custom")
 	int32 MaxAmmo = 3;
 	
 	void MoveBarrelTowards(FVector AimDirection);
@@ -76,7 +73,7 @@ private:
 	bool IsBarrelMoving();
 
 	UPROPERTY(EditDefaultsOnly, Category = "Setup")
-	float ReloadTimeInSeconds = 3;
+	float ReloadTimeInSeconds = .1;
 
 	float LastFireTime = 0.0f;
 

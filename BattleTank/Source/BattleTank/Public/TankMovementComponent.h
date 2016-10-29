@@ -8,7 +8,7 @@
 class UTankTracks;
 
 /**
- * Responsible for driving the tank tracks
+ * Responsible for driving the tank tracks TODO fix movement to always work and not have strange right turn issues
  */
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BATTLETANK_API UTankMovementComponent : public UNavMovementComponent
