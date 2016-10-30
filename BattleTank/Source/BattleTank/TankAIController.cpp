@@ -50,7 +50,10 @@ void ATankAIController::SetPawn(APawn * InPawn)
 
 void ATankAIController::OnPossessedTankDeath()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Tank dead"));
+	//DetachFromControllerPendingDestroy()
+	if (!ensure(GetPawn())) { return; } //TODO remove if OK. Production code should not be crashing the game
+	GetPawn()->DetachFromControllerPendingDestroy();
+	UE_LOG(LogTemp, Warning, TEXT("AI Tank dead"));
 }
 
 

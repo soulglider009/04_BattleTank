@@ -24,6 +24,9 @@ private:
 
 	virtual void SetPawn(APawn* InPawn) override;
 
+	UFUNCTION()
+	void OnPossessedTankDeath();
+
 	UTankAimingComponent* AimingComponent = nullptr;
 
 	UPROPERTY(EditDefaultsOnly)
