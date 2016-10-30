@@ -91,5 +91,6 @@ void ATankPlayerController::SetPawn(APawn* InPawn)
 
 void ATankPlayerController::OnPossessedTankDeath()
 {
+	GetPawn()->DetachFromControllerPendingDestroy();
 	StartSpectatingOnly();
 }
